@@ -1,28 +1,14 @@
-const http = new EasyHTTP;
+let username = "rcruz@stamps.com"
+let apiKey = "iUPKIU4QehgPPAj9pgPK-nKRihZ/TSXvZahM.QHAS";
+const http = new BootCampHttp;
 
-// Get Users
-// http.get('https://jsonplaceholder.typicode.com/users')
-//   .then(data => console.log(data))
-//   .catch(err => console.log(err));
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
+const url = "https://stamps.testrail.io/index.php?/api/v2/get_case/4930"
 
-// User Data
-const data = {
-  name: 'John Doe',
-  username: 'johndoe',
-  email: 'jdoe@gmail.com'
-}
 
-// Create User
-// http.post('https://jsonplaceholder.typicode.com/users', data)
-//   .then(data => console.log(data))
-//   .catch(err => console.log(err));
-
-// Update Post
-// http.put('https://jsonplaceholder.typicode.com/users/2', data)
-//   .then(data => console.log(data))
-//   .catch(err => console.log(err));
-
-// Delete User
-http.delete('https://jsonplaceholder.typicode.com/users/2')
-.then(data => console.log(data))
-.catch(err => console.log(err));
+fetch(url, {
+  headers: {
+    "Authorization": "Basic " + username + ":" + apiKey,
+    "Content-Type": "application/json"
+  }
+}).then(res => console.log(res))
