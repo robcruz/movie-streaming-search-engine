@@ -3,19 +3,18 @@
 let movieTitle = "Avengers Endgame"
 let movieInfo = null
 
-var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": `http://www.omdbapi.com/?apikey=c164b08f&t=${movieTitle}`,
-  "method": "GET"
-}
 
-testCallback(settings, getMovieInfo)
+testCallback(movieTitle, getMovieInfo)
 
-function testCallback(settings, callback){
-  $.ajax(settings)
-    .then(callback)
-    .catch(err => console.log(err));
+function testCallback(title, callback){
+  $.ajax({
+    "async": true,
+    "crossDomain": true,
+    "url": `http://www.omdbapi.com/?apikey=c164b08f&t=${title}`,
+    "method": "GET",
+    success: callback,
+    error: err => console.log(err)
+  })
 }
 
 function getMovieInfo(response) {
