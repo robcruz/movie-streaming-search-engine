@@ -12,26 +12,33 @@ getOMDBMovie("Avengers Endgame", (err, res) => {
     } else {
       console.log(`omdbapi.com callback for title "${res['Title']}"`)
       console.log(`OMDB Movie Title: ${res['Title']}`)
+      renderOMDBElements(res)
       getStreamingMovie(res['Title'], (err, res) => {
-        console.log(`rapidapi.com callback for term "${res.term}"`)
         if (err) {
-          alert("There was an error")
           console.log(err)
         } else {
           if (res.results) {
+            console.log(`rapidapi.com callback for term "${res.term}"`)
             console.log(res)
+            renderingStreamingMovieElements(res)
+            console.log(`rapidapi.com callback for term "${res.term}"... done!`)
           } else {
             // no results or error
             console.log(res)
           }
         }
-        console.log(`rapidapi.com callback for term "${res.term}"... done!`)
       })
       console.log(`omdbapi.com callback for title "${res['Title']}"... done!`)
       console.log(res)
     }
   }
 })
+
+function renderOMDBElements(res) {
+  console.log('rendering OMDB elements')
+  console.log(res)
+  console.log('OMDB elements rendered')
+}
 
 
 function getOMDBMovie(title, callback){
@@ -64,7 +71,11 @@ function getStreamingMovie(title, callback) {
   console.log(`rapidapi.com Ajax call for title "${title}"... done!`)
 }
 
-
+function renderingStreamingMovieElements(res) {
+  console.log('rendering Streaming Movie elements')
+  console.log(res)
+  console.log('OMDB Streaming Movie elements rendered')
+}
 
 
 
