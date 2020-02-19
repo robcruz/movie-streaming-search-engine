@@ -7,24 +7,29 @@ function getOMDBMovieFromLocal(title, callback) {
   let localRes = JSON.parse(localStorage.getItem(omdbLocalStorageKey(title)))
 
   if (localRes) {
-    console.log(`Picking up from local storage ${localRes.Title}`)
+    console.log(`local storage OMDB API ${localRes.Title}`)
     renderOMDBElements(localRes)
-    
     getStreamingMovieFromLocal(localRes.Title, processStreamingMovieResponse)
-
-    console.log(`Picking up from local storage ${localRes.Title} - Done!`)
+    console.log(`local storage OMDB API ${localRes.Title} - Done!`)
   } else {
+    console.log(`API call to OMDB API ${title}`)
     getOMDBMovie(title, callback)
+    console.log(`API call to OMDB API ${title} - Done!`)
   }
 }
 
 function getStreamingMovieFromLocal(title, callback){
   
   let localRes = JSON.parse(localStorage.getItem(streamingLocalStorageKey(title)))
+  
   if (localRes){
+    console.log(`local storage Streaming API ${localRes.Title}`)
     callback(null, localRes)
+    console.log(`local storage Streaming API ${localRes.Title} - Done!`)
   } else {
+    console.log(`API call to Streaming API ${title}`)
     getStreamingMovie(title, callback)
+    console.log(`API call to Streaming API ${title} - Done!`)
   }
 }
 
@@ -39,7 +44,7 @@ function processOMDBMovie(err, res) {
       console.log(res["Error"])
       console.log(res)
     } else {
-      
+
       localStorage.setItem(omdbLocalStorageKey(res.Title), JSON.stringify(res))
       console.log(`omdbapi.com callback for title "${res.Title}"`)
       console.log(`OMDB Movie Title: ${res.Title}`)
@@ -56,11 +61,12 @@ function processOMDBMovie(err, res) {
 }
 
 function omdbLocalStorageKey(partialKey) {
-  return `omdb.${partialKey}`
+  return `omdb.${partialKey.replace(/"/g, "")}`
 }
 
 function streamingLocalStorageKey(partialKey) {
-  return `streaming.${partialKey}`
+  
+  return `streaming.${partialKey.replace(/"/g, "")}`
 }
 
 function processStreamingMovieResponse(err, res){
@@ -72,7 +78,9 @@ function processStreamingMovieResponse(err, res){
       
       console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"`)
       console.log(res)
+      
       localStorage.setItem(streamingLocalStorageKey(res.term), JSON.stringify(res))
+      
       renderStreamingMovieElements(res)
       
       console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"... done!`)
