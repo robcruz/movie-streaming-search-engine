@@ -19,11 +19,10 @@ function getOMDBMovieFromLocal(title, callback) {
 
 function getStreamingMovieFromLocal(title, callback){
   let localRes = JSON.parse(localStorage.getItem(streamingLocalStorageKey(title)))
-  
   if (localRes){
-    console.log(`local storage Streaming API ${localRes.Title}`)
+    console.log(`local storage Streaming API ${localRes.term}`)
     callback(null, localRes)
-    console.log(`local storage Streaming API ${localRes.Title} - Done!`)
+    console.log(`local storage Streaming API ${localRes.term} - Done!`)
   } else {
     console.log(`API call to Streaming API ${title}`)
     getStreamingMovie(title, callback)
@@ -31,28 +30,28 @@ function getStreamingMovieFromLocal(title, callback){
   }
 }
 
-function processOMDBMovie(err, res) {
+function processOMDBMovie(err, response) {
   
   if (err) {
     console.log('omdb err has a value')
     console.log(err)
   } else {
-    if (res["Error"]) {
+    if (response["Error"]) {
       console.log(" error")
-      console.log(res["Error"])
-      console.log(res)
+      console.log(response["Error"])
+      console.log(response)
     } else {
 
-      localStorage.setItem(omdbLocalStorageKey(res.Title), JSON.stringify(res))
-      console.log(`omdbapi.com callback for title "${res.Title}"`)
-      console.log(`OMDB Movie Title: ${res.Title}`)
-      renderOMDBElements(res)
+      localStorage.setItem(omdbLocalStorageKey(response.Title), JSON.stringify(response))
+      console.log(`omdbapi.com callback for title "${response.Title}"`)
+      console.log(`OMDB Movie Title: ${response.Title}`)
+      renderOMDBElements(response)
 
       
-      getStreamingMovieFromLocal(res.Title, processStreamingMovieResponse)
+      getStreamingMovieFromLocal(response.Title, processStreamingMovieResponse)
       
-      console.log(`omdbapi.com callback for title "${res.Title}"... done!`)
-      console.log(res)
+      console.log(`omdbapi.com callback for title "${response.Title}"... done!`)
+      console.log(response)
 
     }
   }
@@ -121,17 +120,18 @@ function getStreamingMovie(title, callback) {
   console.log(`rapidapi.com Ajax call for title "${title}"... done!`)
 }
 
-function renderStreamingMovieElements(res) {
+function renderStreamingMovieElements(response) {
   console.log('rendering Streaming Movie elements')
-  console.log(res)
+  console.log(`Streaming Movie response.term: ${response.term}`)
+  console.log(response)
   console.log('OMDB Streaming Movie elements rendered')
 }
 
-function renderOMDBElements(res) {
+function renderOMDBElements(response) {
   
   console.log('rendering OMDB elements')
-  console.log(res.Title)
-  console.log(res)
+  console.log(`OMDB response.Title: ${response.Title}`)
+  console.log(response)
   console.log('OMDB elements rendered')
 }
 
