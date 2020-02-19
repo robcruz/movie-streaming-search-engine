@@ -1,23 +1,31 @@
 
 let title = "Avengers: Endgame"
-let omdbResponse = JSON.parse(localStorage.getItem(title))
+let omdbResponse = JSON.parse(localStorage.getItem(omdbLocalStorageKey(title)))
 
 if (omdbResponse) {
   console.log(`Picking up from local storage ${omdbResponse.Title}`)
   renderOMDBElements(omdbResponse)
-  
-  getStreamingMovie(omdbResponse.Title, processStreamingMovieResponse)
+  debugger
+  getStreamingMovieFromLocal(omdbResponse.Title, processStreamingMovieResponse)
 
   console.log(`Picking up from local storage ${omdbResponse.Title} - Done!`)
 } else {
-  
   getOMDBMovie(title, processOMDBMovie)
-  
 }
 
+function getStreamingMovieFromLocal(title, callback){
+  debugger
+  let response = JSON.parse(localStorage.getItem(streamingLocalStorageKey(title)))
+  if (response){
+    callback(null, response)
+  } else {
+    getStreamingMovie(title, callback)
+  }
+
+}
 
 function processOMDBMovie(err, res) {
-  
+  debugger
   if (err) {
     console.log('omdb err has a value')
     console.log(err)
@@ -27,14 +35,15 @@ function processOMDBMovie(err, res) {
       console.log(res["Error"])
       console.log(res)
     } else {
-      
-      localStorage.setItem(res.Title, JSON.stringify(res))
+      debugger
+      localStorage.setItem(omdbLocalStorageKey(res.Title), JSON.stringify(res))
       console.log(`omdbapi.com callback for title "${res.Title}"`)
       console.log(`OMDB Movie Title: ${res.Title}`)
       renderOMDBElements(res)
-      
-      getStreamingMovie(res.Title, processStreamingMovieResponse)
-      
+
+      debugger
+      getStreamingMovieFromLocal(res.Title, processStreamingMovieResponse)
+      debugger
       console.log(`omdbapi.com callback for title "${res.Title}"... done!`)
       console.log(res)
 
@@ -42,19 +51,29 @@ function processOMDBMovie(err, res) {
   }
 }
 
+function omdbLocalStorageKey(partialKey) {
+  return `omdb.${partialKey}`
+}
+
+function streamingLocalStorageKey(partialKey) {
+  return `streaming.${partialKey}`
+}
+
 function processStreamingMovieResponse(err, res){
-  
+  debugger
   if (err) {
     console.log(err)
   } else {
     if (res.results) {
-      
+      debugger
       console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"`)
       console.log(res)
+      localStorage.setItem(streamingLocalStorageKey(res.term), JSON.stringify(res))
       renderingStreamingMovieElements(res)
       
       console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"... done!`)
     } else {
+      debugger
       // no results or error
       console.log(res)
     }
@@ -62,7 +81,7 @@ function processStreamingMovieResponse(err, res){
 }
 
 function renderOMDBElements(res) {
-  
+  debugger
   console.log('rendering OMDB elements')
   console.log(res.Title)
   console.log(res)
