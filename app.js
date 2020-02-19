@@ -1,8 +1,22 @@
 
+let title = "Avengers: Endgame"
+let omdbResponse = JSON.parse(localStorage.getItem(title))
 
-getOMDBMovie("Avengers Endgame", processOMDBMovie)
+if (omdbResponse) {
+  debugger
+  renderOMDBElements(omdbResponse)
+  debugger
+  getStreamingMovie(omdbResponse.Title, processStreamingMovieResponse)
+  debugger
+} else {
+  debugger
+  getOMDBMovie(title, processOMDBMovie)
+  debugger
+}
+
 
 function processOMDBMovie(err, res) {
+  debugger
   if (err) {
     console.log('omdb err has a value')
     console.log(err)
@@ -12,24 +26,32 @@ function processOMDBMovie(err, res) {
       console.log(res["Error"])
       console.log(res)
     } else {
-      console.log(`omdbapi.com callback for title "${res['Title']}"`)
-      console.log(`OMDB Movie Title: ${res['Title']}`)
+      debugger
+      localStorage.setItem(res.Title, JSON.stringify(res))
+      console.log(`omdbapi.com callback for title "${res.Title}"`)
+      console.log(`OMDB Movie Title: ${res.Title}`)
       renderOMDBElements(res)
-      getStreamingMovie(res['Title'], processStreamingMovieResponse)
-      console.log(`omdbapi.com callback for title "${res['Title']}"... done!`)
+      debugger
+      getStreamingMovie(res.Title, processStreamingMovieResponse)
+      debugger
+      console.log(`omdbapi.com callback for title "${res.Title}"... done!`)
       console.log(res)
+
     }
   }
 }
 
 function processStreamingMovieResponse(err, res){
+  debugger
   if (err) {
     console.log(err)
   } else {
     if (res.results) {
+      debugger
       console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"`)
       console.log(res)
       renderingStreamingMovieElements(res)
+      debugger
       console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"... done!`)
     } else {
       // no results or error
@@ -39,7 +61,9 @@ function processStreamingMovieResponse(err, res){
 }
 
 function renderOMDBElements(res) {
+  debugger
   console.log('rendering OMDB elements')
+  console.log(res.Title)
   console.log(res)
   console.log('OMDB elements rendered')
 }
@@ -59,6 +83,7 @@ function getOMDBMovie(title, callback){
 }
 
 function getStreamingMovie(title, callback) {
+  debugger
   console.log(`rapidapi.com Ajax call for title "${title}"`)
   $.ajax({
     "async": true,
