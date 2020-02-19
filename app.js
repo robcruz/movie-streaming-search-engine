@@ -3,11 +3,12 @@ let title = "Avengers: Endgame"
 let omdbResponse = JSON.parse(localStorage.getItem(title))
 
 if (omdbResponse) {
-  
+  console.log(`Picking up from local storage ${omdbResponse.Title}`)
   renderOMDBElements(omdbResponse)
   
   getStreamingMovie(omdbResponse.Title, processStreamingMovieResponse)
-  
+
+  console.log(`Picking up from local storage ${omdbResponse.Title} - Done!`)
 } else {
   
   getOMDBMovie(title, processOMDBMovie)
