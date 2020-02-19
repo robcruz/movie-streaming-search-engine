@@ -1,16 +1,21 @@
 
 let title = "Avengers: Endgame"
-let omdbResponse = JSON.parse(localStorage.getItem(omdbLocalStorageKey(title)))
 
-if (omdbResponse) {
-  console.log(`Picking up from local storage ${omdbResponse.Title}`)
-  renderOMDBElements(omdbResponse)
-  debugger
-  getStreamingMovieFromLocal(omdbResponse.Title, processStreamingMovieResponse)
+getOMDBMovieFromLocal(title, processOMDBMovie)
 
-  console.log(`Picking up from local storage ${omdbResponse.Title} - Done!`)
-} else {
-  getOMDBMovie(title, processOMDBMovie)
+function getOMDBMovieFromLocal(title, callback) {
+  let omdbResponse = JSON.parse(localStorage.getItem(omdbLocalStorageKey(title)))
+
+  if (omdbResponse) {
+    console.log(`Picking up from local storage ${omdbResponse.Title}`)
+    renderOMDBElements(omdbResponse)
+    debugger
+    getStreamingMovieFromLocal(omdbResponse.Title, processStreamingMovieResponse)
+
+    console.log(`Picking up from local storage ${omdbResponse.Title} - Done!`)
+  } else {
+    getOMDBMovie(title, callback)
+  }
 }
 
 function getStreamingMovieFromLocal(title, callback){
@@ -21,7 +26,6 @@ function getStreamingMovieFromLocal(title, callback){
   } else {
     getStreamingMovie(title, callback)
   }
-
 }
 
 function processOMDBMovie(err, res) {
