@@ -5,7 +5,6 @@ getOMDBMovieFromLocal(title, processOMDBMovie)
 
 function getOMDBMovieFromLocal(title, callback) {
   let localRes = JSON.parse(localStorage.getItem(omdbLocalStorageKey(title)))
-
   if (localRes) {
     console.log(`local storage OMDB API ${localRes.Title}`)
     renderOMDBElements(localRes)
@@ -19,7 +18,6 @@ function getOMDBMovieFromLocal(title, callback) {
 }
 
 function getStreamingMovieFromLocal(title, callback){
-  
   let localRes = JSON.parse(localStorage.getItem(streamingLocalStorageKey(title)))
   
   if (localRes){
