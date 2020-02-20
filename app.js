@@ -12,7 +12,7 @@ function getOMDBMovieFromLocal(title, callback) {
     //console.log(`local storage OMDB API ${localRes.Title} - Done!`)
   } else {
     //console.log(`API call to OMDB API ${title}`)
-    getOMDBMovie(title, callback)
+    getOMDBMovie(title)
     //console.log(`API call to OMDB API ${title} - Done!`)
   }
 }
@@ -31,7 +31,7 @@ function getStreamingMovieFromLocal(title, callback){
 }
 
 function processOMDBMovie(err, response) {
-  
+
   if (err) {
     //console.log('omdb err has a value')
     //console.log(err)
@@ -47,9 +47,9 @@ function processOMDBMovie(err, response) {
       //console.log(`OMDB Movie Title: ${response.Title}`)
       renderOMDBElements(response)
 
-      
+
       getStreamingMovieFromLocal(response.Title, processStreamingMovieResponse)
-      
+
       //console.log(`omdbapi.com callback for title "${response.Title}"... done!`)
       //console.log(response)
 
@@ -62,54 +62,53 @@ function omdbLocalStorageKey(partialKey) {
 }
 
 function streamingLocalStorageKey(partialKey) {
-  
+
   return `streaming.${partialKey.replace(/"/g, "")}`
 }
 
 function processStreamingMovieResponse(err, res){
-  
+
   if (err) {
     //console.log(err)
   } else {
     if (res.results) {
-      
+
       //console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"`)
       //console.log(res)
-      
+
       localStorage.setItem(streamingLocalStorageKey(res.term), JSON.stringify(res))
-      
+
       renderStreamingMovieElements(res)
-      
+
       //console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"... done!`)
     } else {
-      
+
       // no results or error
       //console.log(res)
     }
   }
 }
 
-function getOMDBMovie(title, callback){
+function getOMDBMovie(title){
   //console.log(`omdbapi.com Ajax call for title "${title}"`)
-  $.ajax({
+  return $.ajax({
     "async": true,
     "crossDomain": true,
     "url": `http://www.omdbapi.com/?apikey=c164b08f&t="${title}"`,
-    "method": "GET",
-    success: res => callback(null, res),
-    error: err => callback(err)
+    "dataType": "jsonp",
+    "method": "GET"
   })
   //console.log(`omdbapi.com Ajax call for title "${title}"... done!`)
 }
 
 function getStreamingMovie(title, callback) {
-  
   //console.log(`rapidapi.com Ajax call for title "${title}"`)
   $.ajax({
     "async": true,
     "crossDomain": true,
     "url": `https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term="${title}"`,
     "method": "GET",
+    "dataType": "jsonp",
     "headers": {
       "x-rapidapi-host": "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
       "x-rapidapi-key": "b1ca774955msh58c2e44d8019f1cp19dff8jsn096f4ba49c6a"
