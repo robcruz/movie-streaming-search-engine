@@ -6,52 +6,52 @@ getOMDBMovieFromLocal(title, processOMDBMovie)
 function getOMDBMovieFromLocal(title, callback) {
   let localRes = JSON.parse(localStorage.getItem(omdbLocalStorageKey(title)))
   if (localRes) {
-    console.log(`local storage OMDB API ${localRes.Title}`)
+    //console.log(`local storage OMDB API ${localRes.Title}`)
     renderOMDBElements(localRes)
     getStreamingMovieFromLocal(localRes.Title, processStreamingMovieResponse)
-    console.log(`local storage OMDB API ${localRes.Title} - Done!`)
+    //console.log(`local storage OMDB API ${localRes.Title} - Done!`)
   } else {
-    console.log(`API call to OMDB API ${title}`)
+    //console.log(`API call to OMDB API ${title}`)
     getOMDBMovie(title, callback)
-    console.log(`API call to OMDB API ${title} - Done!`)
+    //console.log(`API call to OMDB API ${title} - Done!`)
   }
 }
 
 function getStreamingMovieFromLocal(title, callback){
   let localRes = JSON.parse(localStorage.getItem(streamingLocalStorageKey(title)))
   if (localRes){
-    console.log(`local storage Streaming API ${localRes.term}`)
+    //console.log(`local storage Streaming API ${localRes.term}`)
     callback(null, localRes)
-    console.log(`local storage Streaming API ${localRes.term} - Done!`)
+    //console.log(`local storage Streaming API ${localRes.term} - Done!`)
   } else {
-    console.log(`API call to Streaming API ${title}`)
+    //console.log(`API call to Streaming API ${title}`)
     getStreamingMovie(title, callback)
-    console.log(`API call to Streaming API ${title} - Done!`)
+    //console.log(`API call to Streaming API ${title} - Done!`)
   }
 }
 
 function processOMDBMovie(err, response) {
   
   if (err) {
-    console.log('omdb err has a value')
-    console.log(err)
+    //console.log('omdb err has a value')
+    //console.log(err)
   } else {
     if (response["Error"]) {
-      console.log(" error")
-      console.log(response["Error"])
-      console.log(response)
+      //console.log(" error")
+      //console.log(response["Error"])
+      //console.log(response)
     } else {
 
       localStorage.setItem(omdbLocalStorageKey(response.Title), JSON.stringify(response))
-      console.log(`omdbapi.com callback for title "${response.Title}"`)
-      console.log(`OMDB Movie Title: ${response.Title}`)
+      //console.log(`omdbapi.com callback for title "${response.Title}"`)
+      //console.log(`OMDB Movie Title: ${response.Title}`)
       renderOMDBElements(response)
 
       
       getStreamingMovieFromLocal(response.Title, processStreamingMovieResponse)
       
-      console.log(`omdbapi.com callback for title "${response.Title}"... done!`)
-      console.log(response)
+      //console.log(`omdbapi.com callback for title "${response.Title}"... done!`)
+      //console.log(response)
 
     }
   }
@@ -69,28 +69,28 @@ function streamingLocalStorageKey(partialKey) {
 function processStreamingMovieResponse(err, res){
   
   if (err) {
-    console.log(err)
+    //console.log(err)
   } else {
     if (res.results) {
       
-      console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"`)
-      console.log(res)
+      //console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"`)
+      //console.log(res)
       
       localStorage.setItem(streamingLocalStorageKey(res.term), JSON.stringify(res))
       
       renderStreamingMovieElements(res)
       
-      console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"... done!`)
+      //console.log(`rapidapi.com processStreamingMovieResponse for term "${res.term}"... done!`)
     } else {
       
       // no results or error
-      console.log(res)
+      //console.log(res)
     }
   }
 }
 
 function getOMDBMovie(title, callback){
-  console.log(`omdbapi.com Ajax call for title "${title}"`)
+  //console.log(`omdbapi.com Ajax call for title "${title}"`)
   $.ajax({
     "async": true,
     "crossDomain": true,
@@ -99,12 +99,12 @@ function getOMDBMovie(title, callback){
     success: res => callback(null, res),
     error: err => callback(err)
   })
-  console.log(`omdbapi.com Ajax call for title "${title}"... done!`)
+  //console.log(`omdbapi.com Ajax call for title "${title}"... done!`)
 }
 
 function getStreamingMovie(title, callback) {
   
-  console.log(`rapidapi.com Ajax call for title "${title}"`)
+  //console.log(`rapidapi.com Ajax call for title "${title}"`)
   $.ajax({
     "async": true,
     "crossDomain": true,
@@ -117,7 +117,7 @@ function getStreamingMovie(title, callback) {
     success: res => callback(null, res),
     error: err => callback(err)
   })
-  console.log(`rapidapi.com Ajax call for title "${title}"... done!`)
+  //console.log(`rapidapi.com Ajax call for title "${title}"... done!`)
 }
 
 function renderStreamingMovieElements(response) {
@@ -128,7 +128,6 @@ function renderStreamingMovieElements(response) {
 }
 
 function renderOMDBElements(response) {
-  
   console.log('rendering OMDB elements')
   console.log(`OMDB response.Title: ${response.Title}`)
   console.log(response)
