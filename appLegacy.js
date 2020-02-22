@@ -8,7 +8,8 @@ function getOMDBMovieFromLocal(title, callback) {
   if (localRes) {
     //console.log(`local storage OMDB API ${localRes.Title}`)
     renderOMDBElements(localRes)
-    getStreamingMovieFromLocal(localRes.Title, processStreamingMovieResponse)
+    getStreamingMovieFromLocal(localRes.Title)
+      .then(res => processStreamingMovieResponse(null, res))
     //console.log(`local storage OMDB API ${localRes.Title} - Done!`)
   } else {
     //console.log(`API call to OMDB API ${title}`)
@@ -25,7 +26,19 @@ function getStreamingMovieFromLocal(title, callback){
     //console.log(`local storage Streaming API ${localRes.term} - Done!`)
   } else {
     //console.log(`API call to Streaming API ${title}`)
-    getStreamingMovie(title, callback)
+    $.ajax({
+      "async": true,
+      "crossDomain": true,
+      "url": `https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term="${title}"`,
+      "method": "GET",
+      "dataType": "jsonp",
+      "headers": {
+        "x-rapidapi-host": "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
+        "x-rapidapi-key": "b1ca774955msh58c2e44d8019f1cp19dff8jsn096f4ba49c6a"
+      },
+      success: res => callback(null, res),
+      error: err => callback(err)
+    })
     //console.log(`API call to Streaming API ${title} - Done!`)
   }
 }
@@ -99,24 +112,6 @@ function getOMDBMovie(title){
     "method": "GET"
   })
   //console.log(`omdbapi.com Ajax call for title "${title}"... done!`)
-}
-
-function getStreamingMovie(title, callback) {
-  //console.log(`rapidapi.com Ajax call for title "${title}"`)
-  $.ajax({
-    "async": true,
-    "crossDomain": true,
-    "url": `https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term="${title}"`,
-    "method": "GET",
-    "dataType": "jsonp",
-    "headers": {
-      "x-rapidapi-host": "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
-      "x-rapidapi-key": "b1ca774955msh58c2e44d8019f1cp19dff8jsn096f4ba49c6a"
-    },
-    success: res => callback(null, res),
-    error: err => callback(err)
-  })
-  //console.log(`rapidapi.com Ajax call for title "${title}"... done!`)
 }
 
 function renderStreamingMovieElements(response) {
