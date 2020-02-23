@@ -1,5 +1,5 @@
 
-let title = "Troop Zero"
+let title = "Ford v Ferrari"
 let response
 
 getOMDBMovie(title)
@@ -34,13 +34,15 @@ function resolveOMDBResponse(response){
   var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "https://streamzui-streamzui-v1.p.rapidapi.com/search?country=us&imdbid=tt0021239&yearend=2019&yearstart=1900&page=1",
+    "url": `https://streamzui-streamzui-v1.p.rapidapi.com/search?country=us&imdbid=${response.imdbID}&yearend=2019&yearstart=1900&page=1`,
     "method": "GET",
     "headers": {
       "x-rapidapi-host": "streamzui-streamzui-v1.p.rapidapi.com",
       "x-rapidapi-key": "b1ca774955msh58c2e44d8019f1cp19dff8jsn096f4ba49c6a"
     }
   }
+
+  console.log(settings)
 
   $.ajax(settings)
     .then(function (res) {
