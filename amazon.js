@@ -20,7 +20,6 @@ function getOMDBMovie(title) {
   }
 
   return $.ajax(obj).done(function (response) {
-    response = response
     console.log('getOMDBMovie')
     console.log(response)
   });
@@ -58,9 +57,9 @@ function rejectOMDBResponse(error){
 
 function resolveUtellyResponse(response){
   console.log("Amazon")
-  console.log(res);
+  console.log(response);
 }
 
-function rejectUtellyResponse(err){
-  console.log(err);
+function rejectUtellyResponse(error){
+  console.log(error);
 }
