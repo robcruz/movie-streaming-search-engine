@@ -3,22 +3,12 @@
 // let title = "Captain America: Civil War"
 let title = "BoJack Horseman"
 
-let response
-
 getOMDBMovie(title)
-  .then(resolveOMDBResponse)
+  .then(resolveIMDBResponse)
   .catch(rejectOMDBResponse)
 
 function getOMDBMovie(title) {
-  // return $.ajax({
-  //   "async": true,
-  //   "crossDomain": true,
-  //   "url": `http://www.omdbapi.com/?apikey=c164b08f&t="${title}"`,
-  //   "dataType": "jsonp",
-  //   "method": "GET"
-  // })
-
-  var settings = {
+  let obj = {
     "async": true,
     "crossDomain": true,
     "url": `https://imdb8.p.rapidapi.com/title/find?q=${title}`,
@@ -29,7 +19,8 @@ function getOMDBMovie(title) {
     }
   }
 
-  return $.ajax(settings).done(function (response) {
+  return $.ajax(obj).done(function (response) {
+    response = response
     console.log('getOMDBMovie')
     console.log(response)
   });
@@ -40,12 +31,10 @@ function getId(str) {
   return str.match(/^\/title\/(.+)\/$/)[1]
 }
 
-function resolveOMDBResponse(response){
-
+function resolveIMDBResponse(response){
   console.log(getId(response.results[0].id))
-  debugger
 
-  let settings = {
+  let obj = {
     "async": true,
     "crossDomain": true,
     "url": `https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/idlookup?country=US&source_id=${getId(response.results[0].id)}&source=imdb`,
@@ -56,18 +45,22 @@ function resolveOMDBResponse(response){
     }
   }
 
-  $.ajax(settings)
-    .then(function (res) {
-    console.log("Amazon")
-    console.log(res);
-  })
-    .catch(function (err) {
-      console.log(err);
-    })
+  $.ajax(obj)
+    .then(resolveUtellyResponse)
+    .catch(rejectUtellyResponse)
 }
 
 function rejectOMDBResponse(error){
   response = error
   console.log('There was an error')
   console.log(response)
+}
+
+function resolveUtellyResponse(response){
+  console.log("Amazon")
+  console.log(res);
+}
+
+function rejectUtellyResponse(err){
+  console.log(err);
 }
