@@ -1,5 +1,5 @@
 /* The Main.css file hold the main CSS (body, links, menus, logo, cards, containers) for all the pages.
-That includes (index.html,popular-movies.html,search-movies.html,top-rated.html,search-series.html,series-latest.html, series-popular & series-toprated.html). It also holds the CSS for the menu, burger menu, slide menu for the movie-page.html and shows-page.html. */
+That includes (index.html,popular-movies.html,index.html,top-rated.html,search-series.html,series-latest.html, series-popular & series-toprated.html). It also holds the CSS for the menu, burger menu, slide menu for the movie-page.html and shows-page.html. */
 
 /* Target the whole document. */
 *{
@@ -118,15 +118,15 @@ button:focus, button:active{
 	word-wrap: normal;
 	white-space: nowrap;
 	direction: ltr;
-  
+
 	/* Support for all WebKit browsers. */
 	-webkit-font-smoothing: antialiased;
 	/* Support for Safari and Chrome. */
 	text-rendering: optimizeLegibility;
-  
+
 	/* Support for Firefox. */
 	-moz-osx-font-smoothing: grayscale;
-  
+
 	/* Support for IE. */
 	font-feature-settings: 'liga';
   }
@@ -491,7 +491,7 @@ nav a{
 		transform: rotate(0deg)
 	}
 	33%{
-		transform:rotate(15deg) 
+		transform:rotate(15deg)
 	}
 	66%{
 		transform:rotate(-15deg)
